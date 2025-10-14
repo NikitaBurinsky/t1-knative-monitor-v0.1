@@ -13,25 +13,22 @@ var config = KubernetesClientConfiguration.IsInCluster()
     : KubernetesClientConfiguration.BuildConfigFromConfigFile();
 
 var k8sClient = new Kubernetes(config);
-var collector = new KubernetesMetricsCollector(k8sClient);
+var k8sCollector = new KubernetesMetricsCollector(k8sClient);
+//var knativeStatusCollector = new KnativeStatusCollector(k8sClient);
+var knativeMetricsCollector = new KnativeMetricsCollector(new HttpClient());
 
 // Background task to periodically collect metrics
 var app = builder.Build();
 
 app.Lifetime.ApplicationStarted.Register(() =>
 {
-    Task.Run(async () =>
+    _ = Task.Run(async () =>
     {
         while (true)
         {
-            try
-            {
-                await collector.CollectAsync();
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"[Error collecting metrics] {ex.Message}");
-            }
+            await k8sCollector.CollectAsync();
+            //await knativeStatusCollector.CollectAsync();
+            await knativeMetricsCollector.CollectAsync();
 
             await Task.Delay(TimeSpan.FromSeconds(30));
         }
@@ -43,6 +40,15 @@ app.UseHttpMetrics();
 app.MapControllers();
 app.MapMetrics();
 
-app.MapGet("/", () => "Hello from Knative .NET service with Prometheus + Kubernetes metrics!");
+app.MapGet("/work", () =>
+{
+    MetricsRegistry.CustomRequests.Inc();
+    MetricsRegistry.ActiveJobs.Inc();
+
+    Thread.Sleep(500); // simulate work
+
+    MetricsRegistry.ActiveJobs.Dec();
+    return "Work done!";
+});
 
 app.Run();
