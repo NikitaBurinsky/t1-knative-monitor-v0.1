@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "T1-KNative-Monitor-v01": {
+      "commandName": "Project"
+    },
+    "Container (Dockerfile)": {
+      "commandName": "Docker"
+    }
+  }
+}
