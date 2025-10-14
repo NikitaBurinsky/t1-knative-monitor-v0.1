@@ -26,3 +26,4 @@ FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
 ENTRYPOINT ["dotnet", "T1-KNative-Monitor-v01.dll"]
+
