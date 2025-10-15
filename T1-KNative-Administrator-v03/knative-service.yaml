@@ -1,0 +1,15 @@
+﻿apiVersion: serving.knative.dev/v1
+kind: Service
+metadata:
+  name: dotnet-metrics
+  annotations:
+    prometheus.io/scrape: "true"
+    prometheus.io/port: "8080"
+    prometheus.io/path: "/metrics"
+spec:
+  template:
+    spec:
+      containers:
+        - image: your-dockerhub-user/dotnet-metrics:latest
+          ports:
+            - containerPort: 8080

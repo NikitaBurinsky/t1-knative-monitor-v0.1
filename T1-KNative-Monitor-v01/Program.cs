@@ -25,15 +25,24 @@ app.Lifetime.ApplicationStarted.Register(() =>
 {
     _ = Task.Run(async () =>
     {
-        while (true)
-        {
-            await k8sCollector.CollectAsync();
-            await knativeStatusCollector.CollectAsync();
-            await knativeMetricsCollector.CollectAsync();
-            await knativeControlCollector.CollectAsync();
+		try
+		{
+			while (true)
+			{
+				//await k8sCollector.CollectAsync();
+				//await knativeStatusCollector.CollectAsync();
 
-            await Task.Delay(TimeSpan.FromSeconds(30));
-        }
+			//	await knativeMetricsCollector.CollectAsync();
+				await knativeControlCollector.CollectAsync();
+				await Task.Delay(TimeSpan.FromSeconds(30));
+			}
+		}
+		catch (Exception ex) { 
+		Console.ForegroundColor = ConsoleColor.Red;
+			Console.WriteLine("!=ERROR=!");
+		Console.WriteLine(ex.ToString());
+			Console.ResetColor();
+		}
     });
 });
 

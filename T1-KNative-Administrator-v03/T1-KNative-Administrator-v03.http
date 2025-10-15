@@ -1,0 +1,6 @@
+@T1_KNative_Administrator_v03_HostAddress = http://localhost:5151
+
+GET {{T1_KNative_Administrator_v03_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
