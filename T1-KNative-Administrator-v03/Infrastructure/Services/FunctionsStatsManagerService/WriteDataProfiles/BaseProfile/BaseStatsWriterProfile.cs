@@ -6,6 +6,6 @@ namespace T1_KNative_Administrator_v03.Infrastructure.Services.FunctionsStatsMan
 {
 	public abstract class BaseStatsWriterProfile<StatsClass>
 	{
-		public abstract OpResult WriteStatsMetric(FunctionEntity functionData, PrometheusData metricData);
+		public abstract OpResult WriteStatsMetric(FunctionEntity functionData, PrometheusData metricData, string query);
 	}
 }

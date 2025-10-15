@@ -29,6 +29,7 @@ namespace T1_KNative_Admin_v02.Core.Function
 		{
 			public ulong? MaxRunningTimeMS { get; set; }
 			public ulong? AvgRunningTimeMS { get; set; }
+			public ulong MetricsCounts { get; set; } = 0;
 		}
 
 		[Owned]
@@ -36,7 +37,7 @@ namespace T1_KNative_Admin_v02.Core.Function
 		{
 			public ulong? MaxRunningTimeMS { get; set; }
 			public ulong? AvgRunningTimeMS { get; set; }
-
+			public ulong MetricsCounts { get; set; } = 0;
 		}
 
 		[Owned]
@@ -53,6 +54,8 @@ namespace T1_KNative_Admin_v02.Core.Function
 		{
 			public ulong? MaxRAMStatsMB { get; set; }
 			public ulong? AvgRAMStatsMB {  get; set; }
+			public ulong MetricsCounts { get; set; } = 0;
+
 		}
 
 	}

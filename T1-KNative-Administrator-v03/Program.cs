@@ -37,6 +37,7 @@ namespace T1_KNative_Administrator_v03
 
 			var knativeControlCollector = new KnativeControlMetricsCollector(new HttpClient(), 
 				app.Services.GetRequiredService<FunctionsStatsManagerService>(), app.Configuration);
+			SeedTestFunctionEntity(app);
 			app.Lifetime.ApplicationStarted.Register(() =>
 			{
 				_ = Task.Run(async () =>
@@ -46,7 +47,6 @@ namespace T1_KNative_Administrator_v03
 							await knativeControlCollector.CollectAsync();
 							await Task.Delay(TimeSpan.FromSeconds(30));
 						}
-				
 				});
 			});
 

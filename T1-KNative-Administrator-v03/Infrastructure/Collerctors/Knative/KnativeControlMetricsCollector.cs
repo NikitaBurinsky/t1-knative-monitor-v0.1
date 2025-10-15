@@ -39,7 +39,6 @@ public class KnativeControlMetricsCollector : PrometheusCollectorBase
 				"request_count",
 				"request_latencies",
 		}},
-
 	};
 
 	public async Task CollectAsync()
