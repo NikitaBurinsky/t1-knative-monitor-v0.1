@@ -21,6 +21,7 @@
 
 	<ItemGroup>
 		<Folder Include="Core\Metrics\" />
+		<Folder Include="Infrastructure\NewFolder\" />
 		<Folder Include="Presentation\" />
 	</ItemGroup>
 

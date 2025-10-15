@@ -2,14 +2,17 @@
 kind: Service
 metadata:
   name: dotnet-metrics
-  annotations:
-    prometheus.io/scrape: "true"
-    prometheus.io/port: "8080"
-    prometheus.io/path: "/metrics"
 spec:
   template:
+    metadata:
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "8080"
+        prometheus.io/path: "/metrics"
+        autoscaling.knative.dev/minScale: "1"
     spec:
       containers:
         - image: your-dockerhub-user/dotnet-metrics:latest
           ports:
+            - name: http-metrics   # give the port a name
             - containerPort: 8080
