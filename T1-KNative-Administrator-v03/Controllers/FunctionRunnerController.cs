@@ -21,17 +21,33 @@ namespace T1_KNative_Administrator_v03.Controllers
 		public IActionResult GetMetrics(
 			[FromServices] FunctionsInfoRepository metricsStorageService)
 		{
-			var res = metricsStorageService.Get("echo-00001-deployment-5f657c6b6b-dkmhk");
-			if(res != null)
+			var res = metricsStorageService.Get(GetDefaultConfigurationContainerName());
+			if (res != null)
 			{
 				return Ok(res);
 			}
 			else
 			{
-				return BadRequest();
+				return BadRequest("Info was not found");
 			}
 
 
+		}
+		IConfiguration _configuration;
+		private string DefaultContainerName { get; set; }
+		public FunctionRunnerController(IConfiguration configuration)
+		{
+			_configuration = configuration;
+		}
+		private string GetDefaultConfigurationContainerName()
+		{
+			if(DefaultContainerName != null)
+				return DefaultContainerName;
+			string servingName = _configuration["Seeding:FunctionsInfo:ServingName"];
+			string revisionName = _configuration["Seeding:FunctionsInfo:RevisionName"];
+			string podName = _configuration["Seeding:FunctionsInfo:PODName"];
+			DefaultContainerName = servingName + "-" + revisionName + "-"+ podName;
+			return DefaultContainerName;
 		}
 
 	}

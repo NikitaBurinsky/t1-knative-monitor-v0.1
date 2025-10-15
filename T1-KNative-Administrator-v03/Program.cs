@@ -45,7 +45,7 @@ namespace T1_KNative_Administrator_v03
 						while (true)
 						{
 							await knativeControlCollector.CollectAsync();
-							await Task.Delay(TimeSpan.FromSeconds(30));
+							await Task.Delay(TimeSpan.FromSeconds(app.Configuration.GetValue<int>("Collectors:Prometheus:CollectingDelaysSeconds")));
 						}
 				});
 			});
