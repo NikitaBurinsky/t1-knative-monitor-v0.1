@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace T1_KNative_Administrator_v03.Infrastructure.BillingAlgorithmService
+namespace T1_KNative_Administrator_v03.Infrastructure.Services.BillingAlgorithmService
 {
     public class PodMetrics
     {

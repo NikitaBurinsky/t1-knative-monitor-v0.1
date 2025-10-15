@@ -1,10 +1,10 @@
 
 using k8s;
-using T1_KNative_Administrator_v03.Infrastructure.MetricsStorageService;
+using T1_KNative_Administrator_v03.Infrastructure.Services.MetricsStorageService;
 
 namespace T1_KNative_Administrator_v03
 {
-	public class Program
+    public class Program
 	{
 		public static void Main(string[] args)
 		{

@@ -1,5 +1,5 @@
 ﻿using Prometheus;
-using T1_KNative_Administrator_v03.Infrastructure.MetricsStorageService;
+using T1_KNative_Administrator_v03.Infrastructure.Services.MetricsStorageService;
 using T1_KNative_Monitor_v01.Collerctors.Prometheus.PrometheusCollectorBase;
 
 public class KnativeControlMetricsCollector : PrometheusCollectorBase
