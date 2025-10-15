@@ -52,8 +52,10 @@ public class KnativeControlMetricsCollector : PrometheusCollectorBase
                 "request_latencies",
         }},
         { "container", new List<string> {
-                "memory_usage_bytes{pod=" + $"\"{fullName}\"" + ", container=\"user-container\"}",
-                "rate(container_cpu_usage_seconds_total{pod=" + $"\"{fullName}\"" + ", container=\"user-container\"}[30s])"
+                "memory_usage_bytes{pod=" + $"\"{fullName}\"" + ", container=\"user-container\"}"
+        }},
+        { "", new List<string> {
+                "rate(container_cpu_usage_seconds_total{pod=" + $"\"{fullName}\"" + ", container=\"user-container\"}[" + $"{interval}" + "])"
         }},
     };
     }
@@ -66,7 +68,7 @@ public class KnativeControlMetricsCollector : PrometheusCollectorBase
         {
             foreach (var metricQuery in metricService.Value)
             {
-                string query = metricService.Key + "_" + metricQuery;
+                string query = metricService.Key == "" ? metricQuery : metricService.Key + "_" + metricQuery;
                 var res = await GetBodyStringAsync(query, 60, new List<(string p, string v)>
                 {
                     new ("service_name", fullName),
