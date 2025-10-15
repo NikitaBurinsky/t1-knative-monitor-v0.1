@@ -1,0 +1,76 @@
+﻿:root {
+    --bg-color: #fff8f0;
+    --text-color: #333;
+    --card-bg: #fff;
+    --accent: #ff7a00;
+    --accent-dark: #cc5f00;
+}
+
+body.dark {
+    --bg-color: #1e1e1e;
+    --text-color: #f4f4f4;
+    --card-bg: #2a2a2a;
+    --accent: #ff9a3c;
+    --accent-dark: #e67e22;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+    background: var(--bg-color);
+    color: var(--text-color);
+    transition: background 0.3s, color 0.3s;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+h1 {
+    margin: 0;
+}
+
+section {
+    background: var(--card-bg);
+    padding: 20px;
+    margin: 20px 0;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    transition: background 0.3s;
+}
+
+button {
+    padding: 8px 16px;
+    background: var(--accent);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+    button:hover {
+        background: var(--accent-dark);
+    }
+
+label {
+    display: block;
+    margin: 10px 0;
+}
+
+input {
+    padding: 5px;
+    margin-left: 10px;
+}
+
+#metrics-content table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+#metrics-content th, #metrics-content td {
+    border: 1px solid #ddd;
+    padding: 8px;
+}

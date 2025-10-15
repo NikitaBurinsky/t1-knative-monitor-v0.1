@@ -1,0 +1,48 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Function Metrics Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>Мониторинг функций</h1>
+        <button id="theme-toggle">🌙 Тёмный режим</button>
+    </header>
+
+    <section id="metrics">
+        <h2>Метрики функции</h2>
+        <div id="metrics-content">Загрузка данных...</div>
+    </section>
+
+    <section id="runner">
+        <h2>Запуск функции</h2>
+        <form id="runner-form">
+            <label>
+                Количество запусков (runTimes):
+                <input type="number" id="runTimes" name="runTimes" value="1" min="1">
+            </label>
+            <label>
+                Задержка (ms) (runDelay):
+                <input type="number" id="runDelay" name="runDelay" value="0" min="0">
+            </label>
+            <button type="submit">Выполнить</button>
+        </form>
+        <div id="runner-result"></div>
+    </section>
+
+    <section id="billing">
+        <h2>Биллинг</h2>
+        <div id="billing-content">Здесь появится расчёт стоимости</div>
+    </section>
+    <div id="easter-egg" style="display:none;">
+        <div class="tenor-gif-embed" data-postid="6101072539233825575" data-share-method="host" data-aspect-ratio="0.645714" data-width="100%">
+            <a href="https://tenor.com/view/spamton-deltarune-gif-6101072539233825575">Spamton Deltarune GIF</a> from
+            <a href="https://tenor.com/search/spamton-gifs">Spamton GIFs</a>
+        </div>
+        <script type="text/javascript" async src="https://tenor.com/embed.js"></script>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
