@@ -55,7 +55,7 @@ public class KnativeControlMetricsCollector : PrometheusCollectorBase
                 "memory_usage_bytes{pod=" + $"\"{fullName}\"" + ", container=\"user-container\"}"
         }},
         { "", new List<string> {
-                "rate(container_cpu_usage_seconds_total{pod=" + $"\"{fullName}\"" + ", container=\"user-container\"}[" + $"{interval}" + "])"
+                "increase(container_cpu_usage_seconds_total{pod=" + $"\"{fullName}\"" + ", container=\"user-container\"}[" + $"{interval}" + "])"
         }},
     };
     }
