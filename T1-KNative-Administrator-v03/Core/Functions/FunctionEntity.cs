@@ -11,14 +11,13 @@ namespace T1_KNative_Admin_v02.Core.Function
 	{
 		public int Id { get; set; }
 
-
 		public FunctionEntity() { }
 		public string FullName { get; set; }
 		public string RevisionName { get; set; }
 		public string ServingName { get; set; }
 		public string PODName { get; set; }
 
-		///////METRICS///////
+		/////// METRICS ///////
 		public RunningTimeStats RunTimeStats { get; set; } = new RunningTimeStats();
 		public VCPUTimeStats vCpuStats { get; set; } = new VCPUTimeStats();
 		public RequestsCounterStats requestsCounterStats { get; set; } = new RequestsCounterStats();
@@ -52,8 +51,8 @@ namespace T1_KNative_Admin_v02.Core.Function
 		[Owned]
 		public class RAMStats
 		{
-			public ulong? MaxRAMStatsMB { get; set; }
-			public ulong? AvgRAMStatsMB {  get; set; }
+			public ulong? MaxRAMStatsBytes { get; set; }
+			public ulong? AvgRAMStatsBytes {  get; set; }
 			public ulong MetricsCounts { get; set; } = 0;
 
 		}

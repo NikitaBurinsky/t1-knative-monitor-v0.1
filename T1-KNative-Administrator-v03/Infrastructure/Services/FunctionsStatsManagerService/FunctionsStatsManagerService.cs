@@ -2,6 +2,7 @@
 using T1_KNative_Administrator_v03.Core.OpResult;
 using T1_KNative_Administrator_v03.Core.Prometheus.Response;
 using T1_KNative_Administrator_v03.Infrastructure.Repositories.FunctionsInfoRepository;
+using T1_KNative_Administrator_v03.Infrastructure.Services.FunctionsStatsManagerService.WriteDataProfiles.RAMStatsProfile;
 
 namespace T1_KNative_Administrator_v03.Infrastructure.Services.FunctionsManagerService
 {
@@ -12,6 +13,7 @@ namespace T1_KNative_Administrator_v03.Infrastructure.Services.FunctionsManagerS
 		{
 			services = service;
 		}
+		RAMStatsProfile RAMStatsProfile { get; set; } = new RAMStatsProfile();
 
 		public async Task<OpResult> WriteMetrics(string fullFunctionName, PrometheusData scrappedQueryData, string query)
 		{
@@ -24,6 +26,7 @@ namespace T1_KNative_Administrator_v03.Infrastructure.Services.FunctionsManagerS
 				}
 				functionsRepos.UpdateFunctionInfo(fullFunctionName, func =>
 				{
+					RAMStatsProfile.WriteStatsMetric(functionEntity, scrappedQueryData, query);
 				/* TODO 
 				 * Здесь будет пайплайн врайтеров
 				 * 

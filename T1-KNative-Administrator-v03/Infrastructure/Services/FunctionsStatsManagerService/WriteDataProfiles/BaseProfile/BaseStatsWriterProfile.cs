@@ -4,7 +4,7 @@ using T1_KNative_Administrator_v03.Core.Prometheus.Response;
 
 namespace T1_KNative_Administrator_v03.Infrastructure.Services.FunctionsStatsManagerService.WriteDataProfiles.BaseProfile
 {
-	public abstract class BaseStatsWriterProfile<StatsClass>
+	public abstract class BaseStatsWriterProfile
 	{
 		public abstract OpResult WriteStatsMetric(FunctionEntity functionData, PrometheusData metricData, string query);
 	}

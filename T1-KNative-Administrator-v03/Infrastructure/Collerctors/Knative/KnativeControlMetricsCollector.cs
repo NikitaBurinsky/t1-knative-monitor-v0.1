@@ -38,6 +38,8 @@ public class KnativeControlMetricsCollector : PrometheusCollectorBase
 				"request_concurrency",
 				"request_count",
 				"request_latencies",
+		  "container",
+				"memory_usage_bytes{pod=\"echo-00001-deployment-6995d9bcfd-s8mz5\", container=\"user-container\"}"
 		}},
 	};
 

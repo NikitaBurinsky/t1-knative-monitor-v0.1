@@ -22,7 +22,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<Folder Include="Infrastructure\Services\FunctionsStatsManagerService\WriteDataProfiles\RAMStatsProfile\" />
 		<Folder Include="Infrastructure\Services\FunctionsStatsManagerService\WriteDataProfiles\RequestCounterStatsProfile\" />
 		<Folder Include="Infrastructure\Services\FunctionsStatsManagerService\WriteDataProfiles\VCPUStatsProfile\" />
 		<Folder Include="Infrastructure\Services\FunctionsStatsManagerService\WriteDataProfiles\RunTimeStatsProfile\" />
