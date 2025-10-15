@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using T1_KNative_Administrator_v03.Infrastructure.Services.MetricsStorageService;
+using T1_KNative_Administrator_v03.Infrastructure.Repositories.FunctionsInfoRepository;
+using T1_KNative_Administrator_v03.Infrastructure.Services.FunctionsManagerService;
 using static T1_KNative_Monitor_v01.Collerctors.Prometheus.PrometheusCollectorBase.PrometheusCollectorBase;
 
 namespace T1_KNative_Administrator_v03.Controllers
@@ -18,12 +19,12 @@ namespace T1_KNative_Administrator_v03.Controllers
 
 		[HttpGet("echo/get-metrics")]
 		public IActionResult GetMetrics(
-			[FromServices] MetricsStorageService metricsStorageService)
+			[FromServices] FunctionsInfoRepository metricsStorageService)
 		{
-			bool res = metricsStorageService.FunctionsMetrics.TryGetValue("echo-00001-deployment-5f657c6b6b-dkmhk", out var value);
-			if(res == true)
+			var res = metricsStorageService.Get("echo-00001-deployment-5f657c6b6b-dkmhk");
+			if(res != null)
 			{
-				return Ok(value);
+				return Ok(res);
 			}
 			else
 			{

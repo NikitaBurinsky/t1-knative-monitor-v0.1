@@ -10,60 +10,49 @@ namespace T1_KNative_Admin_v02.Core.Function
 	public class FunctionEntity
 	{
 		public int Id { get; set; }
-		public FunctionEntity(string Serving, string Revision, string POD)
-		{
-			RevisionName = Revision;
-			ServingName = Serving;
-			PODName = POD;
-			FullName = ServingName + "-" + RevisionName + "-" + PODName;
-		}
-		public string FullName { get; }
-		public string RevisionName { get; }
-		public string ServingName { get; }
-		public string PODName { get; }
+
+
+		public FunctionEntity() { }
+		public string FullName { get; set; }
+		public string RevisionName { get; set; }
+		public string ServingName { get; set; }
+		public string PODName { get; set; }
 
 		///////METRICS///////
-		public SSDReservingStats SSDStats { get; set; } = new SSDReservingStats();
 		public RunningTimeStats RunTimeStats { get; set; } = new RunningTimeStats();
 		public VCPUTimeStats vCpuStats { get; set; } = new VCPUTimeStats();
 		public RequestsCounterStats requestsCounterStats { get; set; } = new RequestsCounterStats();
 		public RAMStats RamStats {  get; set; } = new RAMStats();
 
 		[Owned]
-		public class SSDReservingStats
-		{
-			public ulong ReservedSpaceMB {  get; set; }
-			public ulong MaxUsedSpaceMB { get; set; }
-			public ulong AbgUsedSpaceMB { get; set; }
-		}
-
-		[Owned]
 		public class RunningTimeStats
 		{
-			public ulong MaxRunningTimeMS { get; set; }
-			public ulong AbgRunningTimeMS { get; set; }
+			public ulong? MaxRunningTimeMS { get; set; }
+			public ulong? AvgRunningTimeMS { get; set; }
 		}
 
 		[Owned]
 		public class VCPUTimeStats
 		{
-			public ulong MaxRunningTimeMS { get; set; }
-			public ulong AbgRunningTimeMS { get; set; }
+			public ulong? MaxRunningTimeMS { get; set; }
+			public ulong? AvgRunningTimeMS { get; set; }
 
 		}
 
 		[Owned]
 		public class RequestsCounterStats
 		{
-			public Dictionary<DateOnly, ulong> RequestsCountByDay = new Dictionary<DateOnly, ulong>();
+			/// <summary>
+			/// Количество запросов в этот день
+			/// </summary>
+			public Dictionary<DateOnly, ulong> RequestsCountByDay = new Dictionary<DateOnly, ulong>(); 
 		}
 
 		[Owned]
 		public class RAMStats
 		{
-			public ulong MaxRAMStatsMB { get; set; }
-			public ulong AvgRAMStatsMB {  get; set; }
-			public ulong ReservedRAMStatsMB { get; set; }
+			public ulong? MaxRAMStatsMB { get; set; }
+			public ulong? AvgRAMStatsMB {  get; set; }
 		}
 
 	}

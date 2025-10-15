@@ -1,6 +1,10 @@
 
 using k8s;
-using T1_KNative_Administrator_v03.Infrastructure.Services.MetricsStorageService;
+using Microsoft.EntityFrameworkCore;
+using T1_KNative_Administrator_v03.Infrastructure.Repositories;
+using T1_KNative_Administrator_v03.Infrastructure.Repositories.FunctionsInfoRepository;
+using T1_KNative_Administrator_v03.Infrastructure.Services.FunctionsManagerService;
+using static T1_KNative_Monitor_v01.Collerctors.Prometheus.PrometheusCollectorBase.PrometheusCollectorBase;
 
 namespace T1_KNative_Administrator_v03
 {
@@ -18,15 +22,21 @@ namespace T1_KNative_Administrator_v03
 			: KubernetesClientConfiguration.BuildConfigFromConfigFile();
 
 			//var k8sClient = new Kubernetes(config);
-			builder.Services.AddSingleton<MetricsStorageService>();
+			builder.Services.AddScoped<FunctionsInfoRepository>();
+			builder.Services.AddSingleton<FunctionsStatsManagerService>();
+			builder.Services.AddDbContext<ApplicationDbContext>(o =>
+			{
+				o.UseInMemoryDatabase(databaseName: "ApplicationDb");
+			});
 
 			var app = builder.Build();
 			app.UseSwagger();
 
 			app.UseSwaggerUI();
-			var metrixStorage = app.Services.GetRequiredService<MetricsStorageService>();
-			var knativeControlCollector = new KnativeControlMetricsCollector(new HttpClient(), metrixStorage);
 
+
+			var knativeControlCollector = new KnativeControlMetricsCollector(new HttpClient(), 
+				app.Services.GetRequiredService<FunctionsStatsManagerService>(), app.Configuration);
 			app.Lifetime.ApplicationStarted.Register(() =>
 			{
 				_ = Task.Run(async () =>
@@ -44,6 +54,23 @@ namespace T1_KNative_Administrator_v03
 			app.UseAuthorization();
 			app.MapControllers();
 			app.Run();
+
+		}
+
+
+		public static void SeedTestFunctionEntity(WebApplication app)
+		{
+			using(var scope = app.Services.CreateScope())
+			{
+				var _configuration = app.Configuration;
+				string servingName = _configuration["Seeding:FunctionsInfo:ServingName"];
+				string revisionName = _configuration["Seeding:FunctionsInfo:RevisionName"];
+				string podName = _configuration["Seeding:FunctionsInfo:PODName"];
+
+				var repos = scope.ServiceProvider.GetRequiredService<FunctionsInfoRepository>();
+				repos.CreateFunctionInfo(servingName, revisionName, podName);
+			}
+			
 		}
 	}
 }
