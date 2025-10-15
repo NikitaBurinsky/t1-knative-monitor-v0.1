@@ -5,10 +5,18 @@ namespace T1_KNative_Administrator_v03.Infrastructure.MetricsStorageService
 {
 	public class MetricsStorageService
 	{
-		public ConcurrentDictionary<string, PrometheusData> FunctionsMetrics { get; set; } = new ConcurrentDictionary<string, PrometheusData>();
+		public ConcurrentDictionary<string, List<PrometheusData>> FunctionsMetrics { get; set; } = new ConcurrentDictionary<string, List<PrometheusData>>();
 		public bool WriteMetrics(string fullFuncName, PrometheusData prometheusData)
 		{
-			var res = FunctionsMetrics.TryAdd(fullFuncName, prometheusData);
+			bool res = FunctionsMetrics.TryGetValue(fullFuncName, out var datas);
+			if (res)
+			{
+				datas.Add(prometheusData);
+			}
+			else
+			{
+				res = FunctionsMetrics.TryAdd(fullFuncName, new List<PrometheusData> { prometheusData });
+			}
 			return res;
 		}
 	}
