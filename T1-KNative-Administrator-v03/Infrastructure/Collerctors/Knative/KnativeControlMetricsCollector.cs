@@ -8,13 +8,23 @@ public class KnativeControlMetricsCollector : PrometheusCollectorBase
 	private readonly HttpClient _http;
 	FunctionsStatsManagerService FunctionsStatsManagerService { get; set; }
 	IConfiguration _configuration;
+	public static Dictionary<string, List<string>> servicesMetricQueries;
+	private string servingName;
+	private string revisionName;
+	private string podName;
+	private string fullName;
+
+
 	public KnativeControlMetricsCollector(HttpClient http, FunctionsStatsManagerService metrics, IConfiguration configuration) : base(http)
 	{
 		FunctionsStatsManagerService = metrics;
 		_configuration = configuration;
-	}
+		servingName = _configuration["Seeding:FunctionsInfo:ServingName"];
+		revisionName = _configuration["Seeding:FunctionsInfo:RevisionName"];
+		podName = _configuration["Seeding:FunctionsInfo:PODName"];
+		fullName = servingName + "-" + revisionName + "-" + podName;
 
-	public static Dictionary<string, List<string>> servicesMetricQueries = new Dictionary<string, List<string>>
+		servicesMetricQueries = new Dictionary<string, List<string>>
 	{
 		{ "autoscaler", new List<string> {
 				"actual_pods",
@@ -40,16 +50,14 @@ public class KnativeControlMetricsCollector : PrometheusCollectorBase
 				"request_latencies",
 		}},
 		{ "container", new List<string> {
-				"memory_usage_bytes{pod=\"echo-00001-deployment-6995d9bcfd-s8mz5\", container=\"user-container\"}" 
+				"memory_usage_bytes{pod=" + $"\"{fullName}\"" + ", container=\"user-container\"}"
 		}},
 	};
+	}
+
 
 	public async Task CollectAsync()
 	{
-		string servingName = _configuration["Seeding:FunctionsInfo:ServingName"];
-		string revisionName = _configuration["Seeding:FunctionsInfo:RevisionName"];
-		string podName = _configuration["Seeding:FunctionsInfo:PODName"];
-		string fullName = servingName + "-" + revisionName + "-" + podName;
 
 		foreach (var metricService in servicesMetricQueries)
 		{
