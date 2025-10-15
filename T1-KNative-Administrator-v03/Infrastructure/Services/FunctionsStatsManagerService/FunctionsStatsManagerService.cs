@@ -26,7 +26,8 @@ namespace T1_KNative_Administrator_v03.Infrastructure.Services.FunctionsManagerS
 				}
 				functionsRepos.UpdateFunctionInfo(fullFunctionName, func =>
 				{
-					RAMStatsProfile.WriteStatsMetric(functionEntity, scrappedQueryData, query);
+					if (query.StartsWith("container_memory_usage_bytes"))
+						RAMStatsProfile.WriteStatsMetric(functionEntity, scrappedQueryData, query);
 				/* TODO 
 				 * Здесь будет пайплайн врайтеров
 				 * 

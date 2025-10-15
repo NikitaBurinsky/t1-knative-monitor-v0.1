@@ -25,7 +25,7 @@ namespace T1_KNative_Administrator_v03.Infrastructure.Services.FunctionsStatsMan
 					{
 						ramData.MaxRAMStatsBytes = ramUsage;
 					}
-					if(ramData.AvgRAMStatsBytes == null)
+					if(ramData.AvgRAMStatsBytes == null) 
 					{ 
 						ramData.AvgRAMStatsBytes = ramUsage;
 					}
