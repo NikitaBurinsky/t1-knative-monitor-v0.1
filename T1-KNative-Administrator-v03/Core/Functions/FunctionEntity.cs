@@ -10,12 +10,13 @@ namespace T1_KNative_Admin_v02.Core.Function
     public class FunctionEntity
     {
         public int Id { get; set; }
-
+		public int UserId { get; set; } = 1;
         public FunctionEntity() { }
         public string FullName { get; set; }
         public string RevisionName { get; set; }
         public string ServingName { get; set; }
         public string PODName { get; set; }
+		public DateTime CreatedAt { get; set; } 
 
         /////// METRICS ///////
         public RunningTimeStats RunTimeStats { get; set; } = new RunningTimeStats();

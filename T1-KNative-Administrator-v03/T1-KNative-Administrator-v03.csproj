@@ -22,8 +22,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<Folder Include="Infrastructure\Services\FunctionsStatsManagerService\WriteDataProfiles\RequestCounterStatsProfile\" />
-		<Folder Include="Infrastructure\Services\FunctionsStatsManagerService\WriteDataProfiles\VCPUStatsProfile\" />
+		<Folder Include="Core\PeriodInstanse\" />
 		<Folder Include="Infrastructure\Services\FunctionsStatsManagerService\WriteDataProfiles\RunTimeStatsProfile\" />
 		<Folder Include="Presentation\" />
 	</ItemGroup>

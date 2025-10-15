@@ -34,11 +34,12 @@ namespace T1_KNative_Administrator_v03.Controllers
 
 		}
 		IConfiguration _configuration;
-		private string DefaultContainerName { get; set; }
+
 		public FunctionRunnerController(IConfiguration configuration)
 		{
 			_configuration = configuration;
 		}
+		private string DefaultContainerName { get; set; }
 		private string GetDefaultConfigurationContainerName()
 		{
 			if(DefaultContainerName != null)

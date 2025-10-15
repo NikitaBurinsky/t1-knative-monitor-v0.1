@@ -30,10 +30,22 @@ namespace T1_KNative_Administrator_v03.Infrastructure.Repositories.FunctionsInfo
 				PODName = podName,
 				RevisionName = revisionName,
 				FullName = servingName + "-" + revisionName + "-" + podName,
+				CreatedAt = DateTime.UtcNow
 			});
 			await dbContext.SaveChangesAsync();
 			return OpResult<int>.Success(entry.Entity.Id);
 		}
+		public OpResult DeleteFunctionInfo(string fulFuncName, int UserId = 1)
+		{
+			var entry = FunctionEntities.FirstOrDefault(x => x.FullName == fulFuncName);
+
+			if (entry == null)
+				return OpResult.Error("Function Not Found", HttpStatusCode.NotFound);
+			dbContext.Functions.Remove(entry);
+			dbContext.SaveChangesAsync();
+			return OpResult.Success();
+		}
+
 		public async Task<OpResult<int>> UpdateFunctionInfo(string fullName, Action<FunctionEntity> action)
 		{
 			var entity = dbContext.Functions.FirstOrDefault(x => x.FullName == fullName);
