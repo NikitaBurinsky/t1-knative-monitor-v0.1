@@ -17,14 +17,9 @@ COPY . .
 WORKDIR "/src/."
 RUN dotnet build "./T1-KNative-Administrator-v03.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
-
-WORKDIR /app
-RUN mkdir -p /root/.kube
-COPY kubeconfig /root/.kube/config
-RUN chmod 600 /root/.kube/config
-
 # This stage is used to publish the service project to be copied to the final stage
 FROM build AS publish
+WORKDIR /src
 ARG BUILD_CONFIGURATION=Release
 RUN dotnet publish "./T1-KNative-Administrator-v03.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
 
@@ -32,4 +27,9 @@ RUN dotnet publish "./T1-KNative-Administrator-v03.csproj" -c $BUILD_CONFIGURATI
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
+
+RUN mkdir -p /home/app/.kube
+COPY kubeconfig /home/app/.kube/config
+# RUN chmod 600 /home/app/.kube/config
+
 ENTRYPOINT ["dotnet", "T1-KNative-Administrator-v03.dll"]
