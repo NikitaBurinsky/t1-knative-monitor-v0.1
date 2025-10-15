@@ -101,5 +101,70 @@ document.querySelector("h1").addEventListener("dblclick", () => {
     document.getElementById("easter-egg").style.display = "block";
 });
 
+let sessionStart = null;
+let sessionEnd = null;
+let sessionTimer = null;
+
+function updateSessionInfo() {
+    const infoDiv = document.getElementById("session-info");
+
+    let durationText = "";
+    if (sessionStart && !sessionEnd) {
+        const now = new Date();
+        const durationSec = Math.round((now - sessionStart) / 1000);
+        durationText = `<p><b>Длительность (текущая):</b> ${durationSec} сек</p>`;
+    } else if (sessionStart && sessionEnd) {
+        const durationSec = Math.round((sessionEnd - sessionStart) / 1000);
+        durationText = `<p><b>Длительность (итог):</b> ${durationSec} сек</p>`;
+    }
+
+    infoDiv.innerHTML = `
+    <p><b>Начало сеанса:</b> ${sessionStart ? sessionStart.toLocaleString() : "—"}</p>
+    <p><b>Конец сеанса:</b> ${sessionEnd ? sessionEnd.toLocaleString() : "—"}</p>
+    ${durationText}
+  `;
+}
+
+document.getElementById("start-session").addEventListener("click", () => {
+    sessionStart = new Date();
+    sessionEnd = null;
+
+    if (sessionTimer) clearInterval(sessionTimer);
+    sessionTimer = setInterval(updateSessionInfo, 1000);
+
+    updateSessionInfo();
+});
+
+document.getElementById("end-session").addEventListener("click", () => {
+    if (!sessionStart) {
+        alert("Сначала начните сеанс!");
+        return;
+    }
+    sessionEnd = new Date();
+    if (sessionTimer) clearInterval(sessionTimer);
+    updateSessionInfo();
+});
+
+document.getElementById("generate-invoice").addEventListener("click", () => {
+    if (!sessionStart || !sessionEnd) {
+        alert("Нужно завершить сеанс перед выставлением счёта!");
+        return;
+    }
+
+    const durationMs = sessionEnd - sessionStart;
+    const durationSec = Math.round(durationMs / 1000);
+
+    const TIME_RATE = 0.00002;
+    const timeCost = durationSec * TIME_RATE;
+
+    const billingBlock = document.getElementById("billing-content");
+    billingBlock.innerHTML += `
+    <p><b>Сеанс:</b> ${durationSec} сек × ${TIME_RATE} $ = ${timeCost.toFixed(6)} $</p>
+    <p><i>Временные рамки: ${sessionStart.toLocaleString()} — ${sessionEnd.toLocaleString()}</i></p>
+  `;
+
+    updateSessionInfo();
+});
+
 // ====== Автозагрузка ======
 window.onload = loadMetrics;
