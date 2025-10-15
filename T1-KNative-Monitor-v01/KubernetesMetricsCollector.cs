@@ -34,11 +34,11 @@ public class KubernetesMetricsCollector
         var nodes = await _client.CoreV1.ListNodeAsync(cancellationToken: ct);
         var namespaces = await _client.CoreV1.ListNamespaceAsync(cancellationToken: ct);
 
+        // Update Prometheus metrics
         _podCount.Set(pods.Items.Count);
         _nodeCount.Set(nodes.Items.Count);
         _namespaceCount.Set(namespaces.Items.Count);
 
-        // Group pods by namespace
         var perNs = pods.Items
             .GroupBy(p => p.Metadata?.NamespaceProperty ?? "unknown")
             .Select(g => new { Namespace = g.Key, Count = g.Count() });
@@ -48,11 +48,11 @@ public class KubernetesMetricsCollector
             _podsPerNamespace.WithLabels(entry.Namespace).Set(entry.Count);
         }
 
-        // CLI output
-        Console.WriteLine($"[Metrics] Pods={pods.Items.Count}, Nodes={nodes.Items.Count}, Namespaces={namespaces.Items.Count}");
+        // Print to CLI
+        Console.WriteLine($"[K8s] Pods={pods.Items.Count}, Nodes={nodes.Items.Count}, Namespaces={namespaces.Items.Count}");
         foreach (var entry in perNs)
         {
-            Console.WriteLine($"[Metrics] namespace={entry.Namespace} pods={entry.Count}");
+            Console.WriteLine($"[K8s] namespace={entry.Namespace} pods={entry.Count}");
         }
     }
 }

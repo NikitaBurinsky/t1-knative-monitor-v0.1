@@ -14,8 +14,9 @@ var config = KubernetesClientConfiguration.IsInCluster()
 
 var k8sClient = new Kubernetes(config);
 var k8sCollector = new KubernetesMetricsCollector(k8sClient);
-//var knativeStatusCollector = new KnativeStatusCollector(k8sClient);
+var knativeStatusCollector = new KnativeStatusCollector(k8sClient);
 var knativeMetricsCollector = new KnativeMetricsCollector(new HttpClient());
+var knativeControlCollector = new KnativeControlMetricsCollector(new HttpClient());
 
 // Background task to periodically collect metrics
 var app = builder.Build();
@@ -27,8 +28,9 @@ app.Lifetime.ApplicationStarted.Register(() =>
         while (true)
         {
             await k8sCollector.CollectAsync();
-            //await knativeStatusCollector.CollectAsync();
+            await knativeStatusCollector.CollectAsync();
             await knativeMetricsCollector.CollectAsync();
+            await knativeControlCollector.CollectAsync();
 
             await Task.Delay(TimeSpan.FromSeconds(30));
         }
@@ -49,6 +51,13 @@ app.MapGet("/work", () =>
 
     MetricsRegistry.ActiveJobs.Dec();
     return "Work done!";
+});
+
+app.MapGet("/do-work", () =>
+{
+    AppMetrics.BusinessOps.Inc();
+    Console.WriteLine("[App] Business operation executed");
+    return "done";
 });
 
 app.Run();
