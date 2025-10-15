@@ -33,7 +33,7 @@ public class KnativeControlMetricsCollector : PrometheusCollectorBase
                 "desired_pods",
                 "excess_burst_capacity",
                 "stable_request_concurrency",
-                "panic_request_concurrency\t",
+                "panic_request_concurrency",
                 "target_concurrency_per_pod",
                 "stable_requests_per_second",
                 "panic_requests_per_second",
