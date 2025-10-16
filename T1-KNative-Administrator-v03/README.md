@@ -49,8 +49,7 @@ git clone https://github.com/NikitaBurinsky/t1-knative-monitor-v0.1.git
 3. Настрйка Prometheus
 
 ```
-kubectl apply -f knative-service.yaml
-kubectl apply -f ServiceMonitor.yaml
+kubectl apply -f service-monitor.yaml
 ```
 
 4. Доступ к приложению

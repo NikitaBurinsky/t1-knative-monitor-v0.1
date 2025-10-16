@@ -1,0 +1,20 @@
+﻿apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: knative-services-monitor
+  namespace: monitoring
+  labels:
+    release: prometheus
+spec:
+  namespaceSelector:
+    matchNames:
+    - knative-serving
+    - default
+  selector: {}
+  endpoints:
+  - port: http-metrics
+    path: /metrics
+    interval: 15s
+  - port: http-usermetrics
+    path: /metrics
+    interval: 15s
