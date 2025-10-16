@@ -6,6 +6,7 @@
 
 ## Высокоуровневая архитектура
 <img width="1985" height="838" alt="image" src="https://github.com/user-attachments/assets/5e1d9c6f-d935-418b-8a63-c21d91124647" />
+Файл с диаграммой архитектуры `https://drive.google.com/file/d/1CbvkmlrjqTSH_ZPB5KtUMIlmd11eDgoX/view?usp=sharing`
 
 ### Слои архитектуры
 
