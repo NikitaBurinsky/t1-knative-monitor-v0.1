@@ -42,8 +42,8 @@ git clone https://github.com/NikitaBurinsky/t1-knative-monitor-v0.1.git
 `--host` флаг:
 
 ```
-  docker build -t <name> .
-  docker run --host <name>:latest
+docker build -t <name> .
+docker run --host <name>:latest
 ```
 
 3. Настрйка Prometheus
@@ -60,3 +60,7 @@ kubectl apply -f service-monitor.yaml
 ## Конфигурация
 
 Все настройки находятся в файле [appsettings.json](./appsettings.json) в корне репозитория.
+
+## Архитекутра
+
+Архитектура описана в [ARCHITECTURE.md](ARCHITECTURE.md).
