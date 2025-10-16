@@ -5,20 +5,7 @@
 Система представляет собой микросервисную архитектуру для мониторинга, управления и биллинга Knative-функций. Архитектура построена на принципах Domain-Driven Design (DDD) и разделена на четкие слои ответственности.
 
 ## Высокоуровневая архитектура
-    ┌─────────────────┐ ┌──────────────────┐ ┌─────────────────┐
-    │ Веб-клиент     │◄──►│ ASP.NET Core  │◄──►│ Kubernetes    │
-    │ (Dashboard)     │ │ API (5151)       │ │ Cluster         │
-    └─────────────────┘ └──────────────────┘ └─────────────────┘
-    │ │ │                     │
-    │ │ └───► Prometheus ◄────┘
-    │ │ (9090)
-    │ │
-    └───◄ Static Files ─────┘ │
-    (HTML/CSS/JS) ▼
-    ┌──────────────────┐
-    │ Knative Control  │
-    │ Plane Metrics    │
-    └──────────────────┘
+<img width="1985" height="838" alt="image" src="https://github.com/user-attachments/assets/5e1d9c6f-d935-418b-8a63-c21d91124647" />
 
 ### Слои архитектуры
 
@@ -27,7 +14,12 @@
 - **FunctionRunnerController**: Основной контроллер для управления функциями
   - `GET /runner/echo/get-metrics` - получение метрик
   - `POST /runner/echo` - запуск функции
-- **Web UI**: Веб-интерфейс с дашбордом
+  - `POST /billings/start-period` - запуск периода использования функции
+  - `POST /runner/echo` - завершение, подсчет и выставление счета за период использования функции
+- **Web UI**:
+  - `/index.html` Веб-интерфейс
+  - `/swagger/index.html` Веб-интерфейс SwaggerUI
+- **MVC** - API реализованы контроллерами WebApi ASP.NET Core
 
 #### 2. **Application Layer**
 
@@ -42,7 +34,7 @@
   - `FunctionEntity` - центральная сущность системы
 - **Value Objects**: 
   - `RunningTimeStats`, `VCPUTimeStats`, `RequestsCounterStats`, `RAMStats`
-- **OpResult Pattern**: Унифицированная обработка результатов операций
+- **OpResult Pattern**: Унифицированная обработка результатов операций, для минимизации влияния прерываний на скорость системы
 - **Prometheus Models**: Модели для работы с Prometheus API
 
 #### 4. **Infrastructure Layer**
@@ -53,7 +45,7 @@
 - **External Services**: 
   - Kubernetes Client API
   - Prometheus HTTP API
-- **Writer Profiles**: Система обработки различных типов метрик
+- **Writer Profiles**: Система обработки различных типов метрик и выделение из них требуемой информации. Могут быть добавлены новые профили, для расширения списка метрик и статов
 
 ## Детальные потоки данных
 
@@ -71,7 +63,7 @@ RAMStatsProfile.WriteStatsMetric() —→ Другие Profiles\
 ↓
 FunctionsInfoRepository.UpdateFunctionInfo()\
 ↓
-ApplicationDbContext (In-Memory)
+ApplicationDbContext (In-Memory, EF Core, возможная легкая интеграция всех популярных СУБД)
 
 ### 2. Запрос метрик через API
 
@@ -123,8 +115,6 @@ public class FunctionEntity
 - `VCPUTimeStats`: Использование CPU (аналогично времени выполнения)
 - `RequestsCounterStats`: Количество запросов с группировкой по дням
 - `RAMStats`: Использование памяти в байтах
-- `OpResult`: унифицированная обработка операций
-
 
 ### Система Writer Profiles
 
@@ -145,3 +135,4 @@ public abstract class BaseStatsWriterProfile
 - Типизированная обработка специфичных метрик
 - Инкрементальное обновление статистики
 - Поддержка скользящих средних
+- Инкапсуляция логики выделения метрик из pure data 

@@ -9,13 +9,13 @@
 - **Управление функциями**: Запуск функций с настраиваемыми параметрами
 - **Knative интеграция**: Автоматический сбор метрик из Knative Serving
 - **Prometheus мониторинг**: Интеграция с Prometheus для сбора метрик
-- **Веб-интерфейс**: Интуитивный дашборд с темной/светлой темой
+- **Веб-интерфейс**: Дашборд с возможностью теста фич, а также поддержка OpenApi | SwaggerUI (/swagger/index.html)
 
 ## Технологический стек
 
 - **Backend**: ASP.NET Core 8.0, Entity Framework Core, Kubernetes Client
 - **Frontend**: HTML5, CSS3, JavaScript (Vanilla)
-- **База данных**: In-Memory Database (с возможностью миграции)
+- **База данных**: In-Memory Database (Экранированна EF Core, позволяет легкую интеграцию любых СУБД)
 - **Мониторинг**: Prometheus
 - **Оркестрация**: Kubernetes, Knative Serving
 - **Контейнеризация**: Docker
