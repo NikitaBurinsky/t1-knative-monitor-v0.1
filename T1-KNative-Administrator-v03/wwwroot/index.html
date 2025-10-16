@@ -1,57 +1,300 @@
 ﻿<!DOCTYPE html>
-<html lang="ru">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Function Metrics Dashboard</title>
-    <link rel="stylesheet" href="style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>T1-KNative Administrator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+
+        .container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+
+        .section {
+            margin-bottom: 30px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+            .section h2 {
+                margin-top: 0;
+                color: #555;
+                border-bottom: 1px solid #eee;
+                padding-bottom: 10px;
+            }
+
+        .button {
+            background-color: #4CAF50;
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 10px 0;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+
+            .button:hover {
+                background-color: #45a049;
+            }
+
+        .input-group {
+            margin-bottom: 10px;
+        }
+
+        label {
+            display: inline-block;
+            width: 120px;
+            margin-right: 10px;
+        }
+
+        input {
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            width: 100px;
+        }
+
+        .response {
+            margin-top: 15px;
+            padding: 10px;
+            background-color: #f9f9f9;
+            border-radius: 4px;
+            min-height: 20px;
+            white-space: pre-wrap;
+            font-family: monospace;
+            font-size: 14px;
+            border: 1px solid #ddd;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .status {
+            padding: 5px 10px;
+            border-radius: 3px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+            .status.success {
+                background-color: #d4edda;
+                color: #155724;
+                border: 1px solid #c3e6cb;
+            }
+
+            .status.error {
+                background-color: #f8d7da;
+                color: #721c24;
+                border: 1px solid #f5c6cb;
+            }
+
+            .status.info {
+                background-color: #d1ecf1;
+                color: #0c5460;
+                border: 1px solid #bee5eb;
+            }
+    </style>
 </head>
 <body>
-    <header>
-        <h1>Мониторинг функций</h1>
-        <button id="theme-toggle">🌙 Тёмный режим</button>
-    </header>
+    <div class="container">
+        <h1>T1-KNative Administrator</h1>
 
-    <section id="metrics">
-        <h2>Метрики функции</h2>
-        <div id="metrics-content">Загрузка данных...</div>
-    </section>
-
-    <section id="runner">
-        <h2>Запуск функции</h2>
-        <form id="runner-form">
-            <label>
-                Количество запусков (runTimes):
-                <input type="number" id="runTimes" name="runTimes" value="1" min="1">
-            </label>
-            <label>
-                Задержка (ms) (runDelay):
-                <input type="number" id="runDelay" name="runDelay" value="0" min="0">
-            </label>
-            <button type="submit">Выполнить</button>
-        </form>
-        <div id="runner-result"></div>
-    </section>
-
-    <section id="billing">
-        <h2>Биллинг</h2>
-        <div id="billing-content">Здесь появится расчёт стоимости</div>
-        <div id="billing-actions">
-            <button id="start-session">Старт сеанса</button>
-            <button id="end-session">Конец сеанса</button>
-            <button id="generate-invoice">Выставить счёт</button>
+        <!-- Billing Section -->
+        <div class="section">
+            <h2>Billing Management</h2>
+            <p>Manage billing periods:</p>
+            <button class="button" id="startPeriodBtn">Start Billing Period</button>
+            <button class="button" id="endPeriodBtn">End Billing Period</button>
+            <div id="billingStatus"></div>
+            <div class="response" id="billingResponse"></div>
         </div>
-        <div id="session-info"></div>
-    </section>
-    <div id="easter-egg" style="display:none;width:60px;height:120px;align-content:flex-end">
-        <div class="tenor-gif-embed" data-postid="6101072539233825575" data-share-method="host" data-aspect-ratio="0.645714" data-width="100%">
-            <a href="https://tenor.com/view/spamton-deltarune-gif-6101072539233825575">Spamton Deltarune GIF</a> from
-            <a href="https://tenor.com/search/spamton-gifs">Spamton GIFs</a>
+
+        <!-- Function Runner Section -->
+        <div class="section">
+            <h2>Function Runner</h2>
+            <div class="input-group">
+                <label for="runTimes">Run Times:</label>
+                <input type="number" id="runTimes" value="1" min="1">
+            </div>
+            <div class="input-group">
+                <label for="runDelay">Run Delay (ms):</label>
+                <input type="number" id="runDelay" value="0" min="0">
+            </div>
+            <button class="button" id="echoBtn">Run Echo Function</button>
+            <button class="button" id="metricsBtn">Get Echo Metrics</button>
+            <div id="runnerStatus"></div>
+            <div class="response" id="runnerResponse"></div>
         </div>
-        <script type="text/javascript" async src="https://tenor.com/embed.js"></script>
     </div>
-    <footer>
-        <p>Developed by <b>KI14</b>, powered by <i>Lucik U. A. spirit</i></p>
-    </footer>
-    <script src="script.js"></script>
+
+    <script>
+        // Base URL for API calls
+        const baseUrl = ''; // Use relative URLs for same origin
+
+        // Helper function to display status
+        function showStatus(elementId, message, type) {
+            const element = document.getElementById(elementId);
+            element.innerHTML = `<div class="status ${type}">${message}</div>`;
+        }
+
+        // Helper function to display response
+        function showResponse(elementId, data) {
+            const element = document.getElementById(elementId);
+            if (typeof data === 'object') {
+                element.textContent = JSON.stringify(data, null, 2);
+            } else {
+                element.textContent = data;
+            }
+        }
+
+        // Billing functions
+        document.getElementById('startPeriodBtn').addEventListener('click', async () => {
+            showStatus('billingStatus', 'Starting billing period...', 'info');
+            showResponse('billingResponse', '');
+
+            try {
+                const response = await fetch(`${baseUrl}/billings/start-period`, {
+                    method: 'POST'
+                });
+
+                if (response.ok) {
+                    showStatus('billingStatus', 'Billing period started successfully', 'success');
+                    // For endpoints that might return a body, try to parse it
+                    const contentType = response.headers.get('content-type');
+                    if (contentType && contentType.includes('application/json')) {
+                        const data = await response.json();
+                        showResponse('billingResponse', data);
+                    } else {
+                        const text = await response.text();
+                        showResponse('billingResponse', text || 'No response body');
+                    }
+                } else {
+                    showStatus('billingStatus', `Error: ${response.status} ${response.statusText}`, 'error');
+                    const errorText = await response.text();
+                    showResponse('billingResponse', errorText || 'No error details');
+                }
+            } catch (error) {
+                showStatus('billingStatus', `Request failed: ${error.message}`, 'error');
+                showResponse('billingResponse', error.toString());
+            }
+        });
+
+        document.getElementById('endPeriodBtn').addEventListener('click', async () => {
+            showStatus('billingStatus', 'Ending billing period...', 'info');
+            showResponse('billingResponse', '');
+
+            try {
+                const response = await fetch(`${baseUrl}/billings/end-period`, {
+                    method: 'POST'
+                });
+
+                if (response.ok) {
+                    showStatus('billingStatus', 'Billing period ended successfully', 'success');
+                    // Always try to get response body for /end-period
+                    const contentType = response.headers.get('content-type');
+                    let responseBody;
+
+                    if (contentType && contentType.includes('application/json')) {
+                        responseBody = await response.json();
+                    } else {
+                        responseBody = await response.text();
+                    }
+
+                    showResponse('billingResponse', responseBody || 'Empty response body');
+                } else {
+                    showStatus('billingStatus', `Error: ${response.status} ${response.statusText}`, 'error');
+                    const errorText = await response.text();
+                    showResponse('billingResponse', errorText || 'No error details');
+                }
+            } catch (error) {
+                showStatus('billingStatus', `Request failed: ${error.message}`, 'error');
+                showResponse('billingResponse', error.toString());
+            }
+        });
+
+        // Function Runner functions
+        document.getElementById('echoBtn').addEventListener('click', async () => {
+            showStatus('runnerStatus', 'Running echo function...', 'info');
+            showResponse('runnerResponse', '');
+
+            const runTimes = document.getElementById('runTimes').value;
+            const runDelay = document.getElementById('runDelay').value;
+
+            try {
+                const response = await fetch(`${baseUrl}/runner/echo?runTimes=${runTimes}&runDelay=${runDelay}`, {
+                    method: 'POST'
+                });
+
+                if (response.ok) {
+                    showStatus('runnerStatus', 'Echo function executed successfully', 'success');
+                    const contentType = response.headers.get('content-type');
+                    if (contentType && contentType.includes('application/json')) {
+                        const data = await response.json();
+                        showResponse('runnerResponse', data);
+                    } else {
+                        const text = await response.text();
+                        showResponse('runnerResponse', text || 'No response body');
+                    }
+                } else {
+                    showStatus('runnerStatus', `Error: ${response.status} ${response.statusText}`, 'error');
+                    const errorText = await response.text();
+                    showResponse('runnerResponse', errorText || 'No error details');
+                }
+            } catch (error) {
+                showStatus('runnerStatus', `Request failed: ${error.message}`, 'error');
+                showResponse('runnerResponse', error.toString());
+            }
+        });
+
+        document.getElementById('metricsBtn').addEventListener('click', async () => {
+            showStatus('runnerStatus', 'Fetching metrics...', 'info');
+            showResponse('runnerResponse', '');
+
+            try {
+                const response = await fetch(`${baseUrl}/runner/echo/get-metrics`);
+
+                if (response.ok) {
+                    showStatus('runnerStatus', 'Metrics retrieved successfully', 'success');
+                    // Always try to parse response body for metrics endpoint
+                    const contentType = response.headers.get('content-type');
+                    let responseData;
+
+                    if (contentType && contentType.includes('application/json')) {
+                        responseData = await response.json();
+                    } else {
+                        responseData = await response.text();
+                    }
+
+                    showResponse('runnerResponse', responseData || 'Empty response body');
+                } else {
+                    showStatus('runnerStatus', `Error: ${response.status} ${response.statusText}`, 'error');
+                    const errorText = await response.text();
+                    showResponse('runnerResponse', errorText || 'No error details');
+                }
+            } catch (error) {
+                showStatus('runnerStatus', `Request failed: ${error.message}`, 'error');
+                showResponse('runnerResponse', error.toString());
+            }
+        });
+    </script>
 </body>
 </html>

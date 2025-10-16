@@ -125,7 +125,7 @@ function updateSessionInfo() {
   `;
 }
 
-document.getElementById("start-session").addEventListener("click", () => {
+document.getElementById("start-period").addEventListener("click", () => {
     sessionStart = new Date();
     sessionEnd = null;
 
@@ -135,7 +135,7 @@ document.getElementById("start-session").addEventListener("click", () => {
     updateSessionInfo();
 });
 
-document.getElementById("end-session").addEventListener("click", () => {
+document.getElementById("end-period").addEventListener("click", () => {
     if (!sessionStart) {
         alert("Сначала начните сеанс!");
         return;
