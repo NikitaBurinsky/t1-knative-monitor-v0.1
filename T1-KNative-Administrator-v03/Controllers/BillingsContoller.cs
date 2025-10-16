@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using T1_KNative_Admin_v02.Core.Function;
 using T1_KNative_Administrator_v03.Infrastructure.Services.BillingService;
+using static T1_KNative_Administrator_v03.Infrastructure.Services.BillingService.BillingService;
 
 namespace T1_KNative_Administrator_v03.Controllers
 {
@@ -27,11 +29,14 @@ namespace T1_KNative_Administrator_v03.Controllers
 			var res = billingService.EndPeriod(GetDefaultConfigurationContainerName());
 			return res.Succeeded ?
 				Ok(res.Returns) : BadRequest(res);
+
 		}
 
 		IConfiguration _configuration;
 		private string DefaultContainerName { get; set; }
-
+		string servingName;
+		string revisionName;
+		string podName;
 		public BillingsContoller(IConfiguration configuration)
 		{
 			_configuration = configuration;
@@ -41,9 +46,9 @@ namespace T1_KNative_Administrator_v03.Controllers
 		{
 			if (DefaultContainerName != null)
 				return DefaultContainerName;
-			string servingName = _configuration["Seeding:FunctionsInfo:ServingName"];
-			string revisionName = _configuration["Seeding:FunctionsInfo:RevisionName"];
-			string podName = _configuration["Seeding:FunctionsInfo:PODName"];
+			servingName = _configuration["Seeding:FunctionsInfo:ServingName"];
+			revisionName = _configuration["Seeding:FunctionsInfo:RevisionName"];
+			podName = _configuration["Seeding:FunctionsInfo:PODName"];
 			DefaultContainerName = servingName + "-" + revisionName + "-" + podName;
 			return DefaultContainerName;
 		}

@@ -5,20 +5,20 @@ namespace T1_KNative_Administrator_v03.Infrastructure.Services.FunctionRunnerSer
 {
 	public class FunctionsRunnerService
 	{
-		HttpClient HttpClient { get; set; }
-
-		public FunctionsRunnerService(HttpClient httpClient)
+		
+		public FunctionsRunnerService()
 		{
-			HttpClient = httpClient;
 		}
 
 		public async Task<OpResult> RunFunctions(string functionAddress, int runTimes, int runDelay)
 		{
+			HttpClient httpClient = new HttpClient();
+			httpClient.DefaultRequestHeaders.Add("Host", "echo.default.knative.demo.com");
 			try
 			{
 				for (int i = 0; i < runTimes; i++)
 				{
-					await HttpClient.GetAsync(functionAddress);
+					await httpClient.GetAsync(functionAddress);
 					if (runDelay > 0 && i < runTimes - 1)
 					{
 						await Task.Delay(runDelay);
@@ -35,4 +35,4 @@ namespace T1_KNative_Administrator_v03.Infrastructure.Services.FunctionRunnerSer
 
 
 	}
-}
+

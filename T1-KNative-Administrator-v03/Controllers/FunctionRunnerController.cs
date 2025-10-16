@@ -14,12 +14,16 @@ namespace T1_KNative_Administrator_v03.Controllers
         [HttpPost("echo")]
         public async Task<IActionResult> RunEcho(
 			[FromServices] FunctionsRunnerService functionsRunnerService,
+			[FromServices] IConfiguration configuration,
 			[FromQuery] int runTimes = 1,
             [FromQuery] int runDelay = 0)
         {
+
 			if(runDelay <= 0) runDelay = 0;
 			if(runTimes <= 0) runTimes = 0;
-			OpResult opRes = await functionsRunnerService.RunFunctions("http://127.0.0.1:8081", runTimes, runDelay);
+
+			string funcHostName = _configuration["Seeding:FunctionsInfo:FunctionUrl"];
+			OpResult opRes = await functionsRunnerService.RunFunctions(funcHostName, runTimes, runDelay);
             return opRes.Succeeded ?
 				Ok(opRes) :
 				BadRequest(opRes);
