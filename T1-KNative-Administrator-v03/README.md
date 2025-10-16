@@ -54,8 +54,8 @@ kubectl apply -f service-monitor.yaml
 
 4. Доступ к приложению
 
-Веб-интерфейс: [http://localhost:8080](http://localhost:8080)
-Swagger UI: [http://localhost:8080/swagger/index.html](http://localhost:8080/swagger/index.html)
+- Веб-интерфейс: [http://localhost:8080/index.html](http://localhost:8080/index.html)
+- Swagger UI: [http://localhost:8080/swagger/index.html](http://localhost:8080/swagger/index.html)
 
 ## Конфигурация
 
