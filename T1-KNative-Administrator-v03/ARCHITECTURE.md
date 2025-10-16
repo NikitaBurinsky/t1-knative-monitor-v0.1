@@ -20,8 +20,6 @@
     │ Plane Metrics    │
     └──────────────────┘
 
-## Компонентная диаграмма
-
 ### Слои архитектуры
 
 #### 1. **Presentation Layer**
@@ -127,7 +125,6 @@ public class FunctionEntity
 - `RAMStats`: Использование памяти в байтах
 - `OpResult`: унифицированная обработка операций
 
-```
 
 ### Система Writer Profiles
 
