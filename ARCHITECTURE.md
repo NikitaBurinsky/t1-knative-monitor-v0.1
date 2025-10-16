@@ -16,7 +16,9 @@
   - `POST /runner/echo` - запуск функции
   - `POST /billings/start-period` - запуск периода использования функции
   - `POST /runner/echo` - завершение, подсчет и выставление счета за период использования функции
-- **Web UI**: `/index.html` Веб-интерфейс с дашбордом 
+- **Web UI**:
+  - `/index.html` Веб-интерфейс
+  - `/swagger/index.html` Веб-интерфейс SwaggerUI
 - **MVC** - API реализованы контроллерами WebApi ASP.NET Core
 
 #### 2. **Application Layer**
