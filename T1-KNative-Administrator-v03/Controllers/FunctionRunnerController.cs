@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using T1_KNative_Administrator_v03.Core.OpResult;
 using T1_KNative_Administrator_v03.Infrastructure.Repositories.FunctionsInfoRepository;
+using T1_KNative_Administrator_v03.Infrastructure.Services.FunctionRunnerService;
 using T1_KNative_Administrator_v03.Infrastructure.Services.FunctionsManagerService;
 using static T1_KNative_Monitor_v01.Collerctors.Prometheus.PrometheusCollectorBase.PrometheusCollectorBase;
 
@@ -11,22 +13,16 @@ namespace T1_KNative_Administrator_v03.Controllers
     {
         [HttpPost("echo")]
         public async Task<IActionResult> RunEcho(
-            [FromQuery] int runTimes = 1,
+			[FromServices] FunctionsRunnerService functionsRunnerService,
+			[FromQuery] int runTimes = 1,
             [FromQuery] int runDelay = 0)
         {
-            using var client = new HttpClient();
-
-            for (int i = 0; i < runTimes; i++)
-            {
-                await client.GetAsync("http://127.0.0.1:8081");
-
-                if (runDelay > 0 && i < runTimes - 1)
-                {
-                    await Task.Delay(runDelay);
-                }
-            }
-
-            return Ok("");
+			if(runDelay <= 0) runDelay = 0;
+			if(runTimes <= 0) runTimes = 0;
+			OpResult opRes = await functionsRunnerService.RunFunctions("http://127.0.0.1:8081", runTimes, runDelay);
+            return opRes.Succeeded ?
+				Ok(opRes) :
+				BadRequest(opRes);
         }
 
         [HttpGet("echo/get-metrics")]

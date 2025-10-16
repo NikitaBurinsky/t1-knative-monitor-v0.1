@@ -5,6 +5,7 @@ using T1_KNative_Admin_v02.Core.Function;
 using T1_KNative_Administrator_v03.Infrastructure.Repositories;
 using T1_KNative_Administrator_v03.Infrastructure.Repositories.FunctionsInfoRepository;
 using T1_KNative_Administrator_v03.Infrastructure.Services.BillingService;
+using T1_KNative_Administrator_v03.Infrastructure.Services.FunctionRunnerService;
 using T1_KNative_Administrator_v03.Infrastructure.Services.FunctionsManagerService;
 using static T1_KNative_Monitor_v01.Collerctors.Prometheus.PrometheusCollectorBase.PrometheusCollectorBase;
 
@@ -30,6 +31,7 @@ namespace T1_KNative_Administrator_v03
 			builder.Services.AddScoped<FunctionCostCalculator>();
 			builder.Services.AddScoped<BillingService>();
 			builder.Services.AddScoped<FunctionsInfoRepository>();
+			builder.Services.AddScoped<FunctionsRunnerService>();
 			builder.Services.AddSingleton<FunctionsStatsManagerService>();
 			builder.Services.AddDbContext<ApplicationDbContext>(o =>
 			{
