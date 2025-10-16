@@ -57,8 +57,9 @@ kubectl apply -f service-monitor.yaml
 - Веб-интерфейс: [http://localhost:8080/index.html](http://localhost:8080/index.html)
 - Swagger UI: [http://localhost:8080/swagger/index.html](http://localhost:8080/swagger/index.html)
 
-## Конфигурация
+## Конфигурация и настройка тарифных планов
 
+Описание конфигураций приложения находится в [CONFIGURATION.md](CONFIGURATION.md). 
 Все настройки находятся в файле [appsettings.json](./appsettings.json) в корне репозитория.
 
 ## Архитекутра
