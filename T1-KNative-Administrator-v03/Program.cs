@@ -16,6 +16,7 @@ namespace T1_KNative_Administrator_v03
 		{
 			var builder = WebApplication.CreateBuilder(args);
 			builder.Services.AddControllers();
+
 			builder.Services.AddEndpointsApiExplorer();
 			builder.Services.AddSwaggerGen();
 			//Load kubeconfig (works inside cluster or locally)
@@ -40,7 +41,6 @@ namespace T1_KNative_Administrator_v03
 
 			app.UseSwaggerUI();
 
-
 			var knativeControlCollector = new KnativeControlMetricsCollector(new HttpClient(),
 				app.Services.GetRequiredService<FunctionsStatsManagerService>(), app.Configuration);
 			SeedTestFunctionEntity(app);
@@ -58,7 +58,10 @@ namespace T1_KNative_Administrator_v03
 
 			app.UseRouting();
 			app.UseAuthorization();
+			app.UseStaticFiles();
+
 			app.MapControllers();
+
 			app.Run();
 
 		}

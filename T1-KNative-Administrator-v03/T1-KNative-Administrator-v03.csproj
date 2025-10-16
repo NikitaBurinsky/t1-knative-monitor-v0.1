@@ -23,8 +23,15 @@
 
 	<ItemGroup>
 		<Folder Include="Core\PeriodInstanse\" />
+		<Folder Include="Frontend\" />
 		<Folder Include="Infrastructure\Services\FunctionsStatsManagerService\WriteDataProfiles\RunTimeStatsProfile\" />
 		<Folder Include="Presentation\" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Include="wwwroot\index.html" />
+	  <None Include="wwwroot\script.js" />
+	  <None Include="wwwroot\style.css" />
 	</ItemGroup>
 
 </Project>
