@@ -1,4 +1,4 @@
-﻿const API_BASE = "http://localhost:5151/runner/echo";
+﻿const API_BASE = "http://localhost:8080/runner/echo";
 
 // ====== GET запрос при загрузке ======
 async function loadMetrics() {
