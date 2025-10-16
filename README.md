@@ -15,7 +15,7 @@
 
 - **Backend**: ASP.NET Core 8.0, Entity Framework Core, Kubernetes Client
 - **Frontend**: HTML5, CSS3, JavaScript (Vanilla)
-- **База данных**: In-Memory Database (с возможностью миграции)
+- **База данных**: In-Memory Database (Экранированна EF Core, позволяет легкую интеграцию любых СУБД)
 - **Мониторинг**: Prometheus
 - **Оркестрация**: Kubernetes, Knative Serving
 - **Контейнеризация**: Docker
