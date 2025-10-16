@@ -33,6 +33,9 @@ namespace T1_KNative_Administrator_v03.Infrastructure.Services.FunctionsManagerS
                         RAMStatsProfile.WriteStatsMetric(functionEntity, scrappedQueryData, query);
                     else if (query.StartsWith("increase(container_cpu_usage_seconds_total"))
                         VCPUTimeStatsProfile.WriteStatsMetric(functionEntity, scrappedQueryData, query);
+					///Далее могут быть добавлены новые профили с соответсвующими условиями 
+					///их запуска
+					///
                 });
                 return OpResult.Success();
             }
