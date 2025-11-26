@@ -1,56 +1,56 @@
-# Архитектура T1 Knative Administrator
+# T1 Knative Administrator Architecture
 
-## Обзор системы
+## System Overview
 
-Система представляет собой архитектуру для мониторинга, управления и биллинга Knative-функций. Архитектура построена на принципах Domain-Driven Design (DDD) и разделена на четкие слои ответственности.
+The system provides an architecture for monitoring, managing, and billing Knative functions. The architecture is built on Domain-Driven Design (DDD) principles and divided into clear responsibility layers.
 
-## Высокоуровневая архитектура
+## Architecture
 <img width="1985" height="838" alt="image" src="https://github.com/user-attachments/assets/5e1d9c6f-d935-418b-8a63-c21d91124647" />
-Файл с диаграммой архитектуры `https://drive.google.com/file/d/1CbvkmlrjqTSH_ZPB5KtUMIlmd11eDgoX/view?usp=sharing`
+Architecture diagram file: `https://drive.google.com/file/d/1CbvkmlrjqTSH_ZPB5KtUMIlmd11eDgoX/view?usp=sharing`
 
-### Слои архитектуры
+### Architecture Layers
 
 #### 1. **Presentation Layer**
 
-- **FunctionRunnerController**: Основной контроллер для управления функциями
-  - `GET /runner/echo/get-metrics` - получение метрик
-  - `POST /runner/echo` - запуск функции
-  - `POST /billings/start-period` - запуск периода использования функции
-  - `POST /runner/echo` - завершение, подсчет и выставление счета за период использования функции
+- **FunctionRunnerController**: Main controller for function management
+  - `GET /runner/echo/get-metrics` - retrieve metrics
+  - `POST /runner/echo` - start function
+  - `POST /billings/start-period` - start function usage period
+  - `POST /runner/echo` - complete, calculate, and bill for function usage period
 - **Web UI**:
-  - `/index.html` Веб-интерфейс
-  - `/swagger/index.html` Веб-интерфейс SwaggerUI
-- **MVC** - API реализованы контроллерами WebApi ASP.NET Core
+  - `/index.html` Web interface
+  - `/swagger/index.html` SwaggerUI web interface
+- **MVC** - APIs implemented using ASP.NET Core WebApi controllers
 
 #### 2. **Application Layer**
 
-- **Services**: 
-  - `FunctionsStatsManagerService` - оркестрация управления метриками
-  - `KnativeControlMetricsCollector` - сбор метрик из Knative/Prometheus
-- **Background Services**: Периодический сбор метрик
+- **Services**:
+  - `FunctionsStatsManagerService` - orchestrates metrics management
+  - `KnativeControlMetricsCollector` - collects metrics from Knative/Prometheus
+- **Background Services**: Periodic metrics collection
 
 #### 3. **Domain Layer**
 
-- **Entities**: 
-  - `FunctionEntity` - центральная сущность системы
-- **Value Objects**: 
+- **Entities**:
+  - `FunctionEntity` - central system entity
+- **Value Objects**:
   - `RunningTimeStats`, `VCPUTimeStats`, `RequestsCounterStats`, `RAMStats`
-- **OpResult Pattern**: Унифицированная обработка результатов операций, для минимизации влияния прерываний на скорость системы
-- **Prometheus Models**: Модели для работы с Prometheus API
+- **OpResult Pattern**: Unified operation result handling to minimize the impact of interruptions on system speed
+- **Prometheus Models**: Models for working with Prometheus API
 
 #### 4. **Infrastructure Layer**
 
-- **Repositories**: 
-  - `FunctionsInfoRepository` - CRUD операции для функций
-  - `ApplicationDbContext` - контекст Entity Framework
-- **External Services**: 
+- **Repositories**:
+  - `FunctionsInfoRepository` - CRUD operations for functions
+  - `ApplicationDbContext` - Entity Framework context
+- **External Services**:
   - Kubernetes Client API
   - Prometheus HTTP API
-- **Writer Profiles**: Система обработки различных типов метрик и выделение из них требуемой информации. Могут быть добавлены новые профили, для расширения списка метрик и статов
+- **Writer Profiles**: System for processing different types of metrics and extracting required information from them. New profiles can be added to extend the list of metrics and statistics
 
-## Детальные потоки данных
+## Detailed Data Flows
 
-### 1. Сбор метрик
+### 1. Metrics Collection
 
 Knative Components\
 ↓
@@ -60,13 +60,13 @@ KnativeControlMetricsCollector.CollectAsync()\
 ↓
 FunctionsStatsManagerService.WriteMetrics()\
 ↓
-RAMStatsProfile.WriteStatsMetric() —→ Другие Profiles\
+RAMStatsProfile.WriteStatsMetric() —→ Other Profiles\
 ↓
 FunctionsInfoRepository.UpdateFunctionInfo()\
 ↓
-ApplicationDbContext (In-Memory, EF Core, возможная легкая интеграция всех популярных СУБД)
+ApplicationDbContext (In-Memory, EF Core, with potential easy integration of all popular DBMS)
 
-### 2. Запрос метрик через API
+### 2. Metrics Request via API
 
 Web Client → GET /runner/echo/get-metrics\
 ↓
@@ -74,25 +74,25 @@ FunctionRunnerController.GetMetrics()\
 ↓
 FunctionsInfoRepository.Get("echo-00001-deployment-...")\
 ↓
-FunctionEntity (с метриками) → JSON Response\
+FunctionEntity (with metrics) → JSON Response\
 ↓
-Web Dashboard (рендеринг таблицы + биллинг)
+Web Dashboard (table rendering + billing)
 
-### 3. Обработка Prometheus данных
+### 3. Prometheus Data Processing
 
 Prometheus HTTP Response → JSON\
 ↓
-PrometheusQueryResponse (десериализация)\
+PrometheusQueryResponse (deserialization)\
 ↓
 PrometheusData.Result[] → List<PrometheusResult>\
 ↓
 Metric.Values → List<(Timestamp, Value)>\
 ↓
-Writer Profiles (типизированная обработка)
+Writer Profiles (typed processing)
 
-## Доменные модели
+## Domain Models
 
-### FunctionEntity - ядро системы
+### FunctionEntity - System Core
 ```csharp
 public class FunctionEntity
 {
@@ -102,7 +102,7 @@ public class FunctionEntity
     public string ServingName { get; set; }    // "echo-00001"  
     public string PODName { get; set; }        // "5f657c6b6b-dkmhk"
 
-    // Композитные метрики (Owned Types в EF Core)
+    // Composite metrics (Owned Types in EF Core)
     public RunningTimeStats RunTimeStats { get; set; }
     public VCPUTimeStats vCpuStats { get; set; }
     public RequestsCounterStats requestsCounterStats { get; set; }
@@ -110,16 +110,16 @@ public class FunctionEntity
 }
 ```
 
-### Вложенные классы метрик:
+### Nested Metric Classes:
 
-- `RunningTimeStats`: Время выполнения функции (макс, среднее, счетчик)
-- `VCPUTimeStats`: Использование CPU (аналогично времени выполнения)
-- `RequestsCounterStats`: Количество запросов с группировкой по дням
-- `RAMStats`: Использование памяти в байтах
+- `RunningTimeStats`: Function execution time (max, average, count)
+- `VCPUTimeStats`: CPU usage (similar to execution time)
+- `RequestsCounterStats`: Request count grouped by days
+- `RAMStats`: Memory usage in bytes
 
-### Система Writer Profiles
+### Writer Profiles System
 
-**Базовый абстрактный класс:**
+**Base abstract class:**
 
 ```csharp
 public abstract class BaseStatsWriterProfile
@@ -130,10 +130,10 @@ public abstract class BaseStatsWriterProfile
 }
 ```
 
-**Принцип работы:**
+**Operation Principle:**
 
-- Маршрутизация по паттерну query string
-- Типизированная обработка специфичных метрик
-- Инкрементальное обновление статистики
-- Поддержка скользящих средних
-- Инкапсуляция логики выделения метрик из pure data 
+- Routing based on query string patterns
+- Typed processing of specific metrics
+- Incremental statistics updates
+- Support for moving averages
+- Encapsulation of metric extraction logic from pure data
