@@ -1,22 +1,21 @@
 # CONFIGURATION.md
 
-## Обзор конфигурации и расширения функционала
+## Configuration and Functionality Extension Overview
 
-Этот файл конфигурации содержит настройки для системы мониторинга и биллинга функций (serverless functions).
-Также приводятся дополнительные сведения для добавления новых метрик и статов
+This configuration file contains settings for the serverless functions monitoring and billing system. It also provides additional information for adding new metrics and statistics.
 
-## Добавление метрик
+## Adding Metrics
 
-### Вложенные классы метрик:
+### Nested Metric Classes:
 
-- `RunningTimeStats`: Время выполнения функции (макс, среднее, счетчик)
-- `VCPUTimeStats`: Использование CPU (аналогично времени выполнения)
-- `RequestsCounterStats`: Количество запросов с группировкой по дням
-- `RAMStats`: Использование памяти в байтах
+- `RunningTimeStats`: Function execution time (max, average, count)
+- `VCPUTimeStats`: CPU usage (similar to execution time)
+- `RequestsCounterStats`: Request count grouped by days
+- `RAMStats`: Memory usage in bytes
 
-### Система Writer Profiles
+### Writer Profiles System
 
-**Базовый абстрактный класс:**
+**Base abstract class:**
 
 ```csharp
 public abstract class BaseStatsWriterProfile
@@ -27,24 +26,24 @@ public abstract class BaseStatsWriterProfile
 }
 ```
 
-**Принцип работы:**
+**Operation Principle:**
 
-- Маршрутизация по паттерну query string
-- Типизированная обработка специфичных метрик
-- Инкрементальное обновление статистики
-- Поддержка скользящих средних
-- Инкапсуляция логики выделения метрик из pure data
+- Routing based on query string patterns
+- Typed processing of specific metrics
+- Incremental statistics updates
+- Support for moving averages
+- Encapsulation of metric extraction logic from pure data
 
-**Способ добавления**
-- Добавление нового Prometheus query к соответсвующему сервису в `KnativeControlMetricsCollector` (если требуется новая информация от Prometheus)
-- Добавление новых искомых бизнес-полей в `FunctionEntity`
-- Создание класса профиля, наследника `BaseStatsWriterProfile`, приводящего результат запроса к соответсвующим метрикам и изменяющий информацию в соответсвующум `FunctionEntity`
-- Регистрация профиля в `FunctionStatsManagerService.WriteMetrics` с соответвующими условиями запуска  
+**How to Add:**
+- Add new Prometheus query to the corresponding service in `KnativeControlMetricsCollector` (if new information from Prometheus is required)
+- Add new required business fields to `FunctionEntity`
+- Create a profile class inheriting from `BaseStatsWriterProfile` that converts query results to corresponding metrics and updates information in the respective `FunctionEntity`
+- Register the profile in `FunctionStatsManagerService.WriteMetrics` with corresponding execution conditions
 
-## Секции конфигурации
+## Configuration Sections
 
 ### 1. Logging
-Настройки логирования приложения.
+Application logging settings.
 
 ```json
 "Logging": {
@@ -55,12 +54,12 @@ public abstract class BaseStatsWriterProfile
 }
 ```
 
-**Параметры:**
-- `Default` - уровень логирования по умолчанию: `Information`
-- `Microsoft.AspNetCore` - уровень логирования для ASP.NET Core: `Warning`
+**Parameters:**
+- `Default` - default logging level: `Information`
+- `Microsoft.AspNetCore` - logging level for ASP.NET Core: `Warning`
 
 ### 2. BillingConfigurations
-Настройки тарификации для вычисления стоимости выполнения функций.
+Billing settings for calculating function execution costs.
 
 ```json
 "BillingConfigurations": {
@@ -73,14 +72,14 @@ public abstract class BaseStatsWriterProfile
 }
 ```
 
-**Параметры:**
-- `PricePerRequest` - стоимость одного запроса
-- `PricePerGBSeconds` - стоимость за гигабайт-секунду
-- `PricePerVCpuSecond` - стоимость за секунду использования vCPU
-- `PricePerGBMemorySecond` - стоимость за секунду использования памяти
+**Parameters:**
+- `PricePerRequest` - cost per request
+- `PricePerGBSeconds` - cost per gigabyte-second
+- `PricePerVCpuSecond` - cost per vCPU second
+- `PricePerGBMemorySecond` - cost per GB memory second
 
 ### 3. FunctionCostSettings
-Альтернативная/дополнительная система расчета стоимости функций.
+Alternative/additional function cost calculation system.
 
 ```json
 "FunctionCostSettings": {
@@ -94,17 +93,17 @@ public abstract class BaseStatsWriterProfile
 }
 ```
 
-**Параметры:**
-- `BaseCostPerDay` - базовая стоимость в день
-- `CostPerRequest` - стоимость за запрос
-- `CostPerMsCpu` - стоимость за миллисекунду CPU
-- `CostPerMsRuntime` - стоимость за миллисекунду времени выполнения
-- `CostPerMbRam` - стоимость за мегабайт памяти
-- `CostPerMbRamHour` - стоимость за мегабайт-час памяти
-- `Currency` - валюта расчетов
+**Parameters:**
+- `BaseCostPerDay` - base cost per day
+- `CostPerRequest` - cost per request
+- `CostPerMsCpu` - cost per CPU millisecond
+- `CostPerMsRuntime` - cost per runtime millisecond
+- `CostPerMbRam` - cost per megabyte of memory
+- `CostPerMbRamHour` - cost per megabyte-hour of memory
+- `Currency` - calculation currency
 
 ### 4. Seeding
-Настройки для инициализации и сбора метрик функций.
+Settings for function metrics initialization and collection.
 
 ```json
 "Seeding": {
@@ -117,14 +116,14 @@ public abstract class BaseStatsWriterProfile
 }
 ```
 
-**Параметры:**
-- `ServingName` - имя echo функции
-- `RevisionName` - имя ревизии
-- `PODName` - имя POD в Kubernetes
-- `FunctionUrl` - URL для обращения к функции echo
+**Parameters:**
+- `ServingName` - echo function name
+- `RevisionName` - revision name
+- `PODName` - POD name in Kubernetes
+- `FunctionUrl` - URL for accessing the echo function
 
 ### 5. Collectors
-Настройки коллекторов метрик.
+Metrics collectors settings.
 
 ```json
 "Collectors": {
@@ -134,17 +133,15 @@ public abstract class BaseStatsWriterProfile
 }
 ```
 
-**Параметры:**
-- `CollectingDelaysSeconds` - задержка между сборами метрик в секундах: 300 (5 минут)
+**Parameters:**
+- `CollectingDelaysSeconds` - delay between metrics collections in seconds: 300 (5 minutes)
 
 ### 6. AllowedHosts
-Настройки безопасности хостов.
+Host security settings.
 
 ```json
 "AllowedHosts": "*"
 ```
 
-**Значение:**
-- `*` - разрешены все хосты
-
-
+**Value:**
+- `*` - all hosts allowed
